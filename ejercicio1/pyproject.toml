@@ -1,0 +1,46 @@
+[project]
+name = "products-api"
+version = "0.1.0"
+description = "API REST para gestión de productos y clientes"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi[standard]>=0.103.0",
+    "uvicorn>=0.23.2",
+    "sqlalchemy>=2.0.20",
+    "pydantic>=2.3.0",
+    "pydantic-extra-types>=2.1.0",
+    "email-validator>=2.0.0",
+    "python-multipart>=0.0.6",
+    "greenlet>=3.0.0",
+    "httpx>=0.24.1",
+    "aiosqlite>=0.21.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.1",
+    "ruff>=0.9.4",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+respect-gitignore = true
+
+[tool.ruff.lint]
+extend-select = [
+    "E",   # Pycodestyle
+    "W",   # Pycodestyle Warnings
+    "F",   # Pyflakes
+    "B",   # flake8-bugbear
+    "I",   # isort
+    "N",   # pep8-naming
+    "S",   # flake8-bandit
+]
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+docstring-code-format = true
