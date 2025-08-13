@@ -1,32 +1,27 @@
-import os
+from contextlib import asynccontextmanager
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
 
 from api.routers import auth, food
-from app.infrastructure.database.connection import Base, engine
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware
+from app.infrastructure.database.connection import create_tables
 
-# Load environment variables
 load_dotenv()
 
-# Create database tables
-async def create_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()
+    yield
 
 app = FastAPI(
     title="Food Service API",
+    lifespan=lifespan,
     description="API REST protegida con OAuth2",
     version="1.0.0"
 )
 
-# Include routers
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(food.router, prefix="/api/v1/foods", tags=["Foods"])
-
-@app.on_event("startup")
-async def startup_event():
-    await create_tables()
 
 @app.get("/health")
 async def health_check():

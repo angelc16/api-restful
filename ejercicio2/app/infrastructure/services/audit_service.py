@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.interfaces.audit_service import IAuditService
 from app.domain.models.audit import Audit
 
+
 class SQLAuditService(IAuditService):
     def __init__(self, session: AsyncSession):
         self.session = session
@@ -29,4 +30,3 @@ class SQLAuditService(IAuditService):
             current_state=current_state
         )
         self.session.add(audit)
-        # Note: We don't commit here because it will be committed in the repository

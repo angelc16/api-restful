@@ -1,17 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
-from ..dependencies import get_food_repository, get_current_user
-from ..schemas.food import FoodCreate, FoodUpdate, FoodResponse
+
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from ..dependencies import get_current_user, get_food_repository
+from ..schemas.food import FoodCreate, FoodResponse, FoodUpdate
 
 router = APIRouter()
 
-@router.post("/", response_model=FoodResponse)
+@router.post("/", response_model=FoodResponse, status_code=status.HTTP_201_CREATED)
 async def create_food(
     food: FoodCreate,
     food_repository = Depends(get_food_repository),
     current_user = Depends(get_current_user)
 ):
-    return await food_repository.create(food.dict(), current_user.id)
+    created_food = await food_repository.create(food.dict(), current_user.id)
+    return FoodResponse.model_validate(created_food)
 
 @router.get("/", response_model=List[FoodResponse])
 async def get_foods(

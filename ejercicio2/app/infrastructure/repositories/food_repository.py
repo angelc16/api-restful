@@ -8,6 +8,7 @@ from app.domain.interfaces.audit_service import IAuditService
 from app.domain.interfaces.food_repository import IFoodRepository
 from app.domain.models.food import Food
 
+
 class SQLFoodRepository(IFoodRepository):
     def __init__(self, session: AsyncSession, audit_service: IAuditService):
         self.session = session

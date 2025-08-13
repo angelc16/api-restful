@@ -60,6 +60,7 @@ class SQLCustomerRepository(ICustomerRepository):
 
         previous_state = str(db_customer.__dict__)
 
+        customer_data.pop("email", None)
         for key, value in customer_data.items():
             setattr(db_customer, key, value)
 

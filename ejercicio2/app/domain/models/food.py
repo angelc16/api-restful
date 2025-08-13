@@ -2,9 +2,9 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
 from sqlalchemy.sql import func
 
-from app.infrastructure.database.connection import Base
+from app.domain.models.base import BaseModel
 
-class Food(Base):
+class Food(BaseModel):
     __tablename__ = "Comida"
 
     id = Column(Integer, primary_key=True, index=True)

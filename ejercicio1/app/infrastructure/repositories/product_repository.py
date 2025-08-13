@@ -15,14 +15,13 @@ class SQLProductRepository(IProductRepository):
         db_product = Product(**product)
         self.session.add(db_product)
         await self.session.flush()
-
         await self.audit_service.log_action(
             entity_id=db_product.id,
             entity_type="Product",
             user_id=user_id,
             action="CREATE",
             description=f"Created product {db_product.name}",
-            current_state=str(product)
+            current_state=str(product),
         )
 
         await self.session.commit()
@@ -31,25 +30,18 @@ class SQLProductRepository(IProductRepository):
 
     async def get_all(self, skip: int = 0, limit: int = 100) -> List[Product]:
         result = await self.session.execute(
-            select(Product)
-            .filter(Product.is_active)
-            .offset(skip)
-            .limit(limit)
+            select(Product).filter(Product.is_active).offset(skip).limit(limit)
         )
         return result.scalars().all()
 
     async def get_by_id(self, product_id: int) -> Optional[Product]:
         result = await self.session.execute(
-            select(Product)
-            .filter(Product.id == product_id, Product.is_active)
+            select(Product).filter(Product.id == product_id, Product.is_active)
         )
         return result.scalar_one_or_none()
 
     async def update(
-        self,
-        product_id: int,
-        product_data: dict,
-        user_id: int
+        self, product_id: int, product_data: dict, user_id: int
     ) -> Product:
         db_product = await self.get_by_id(product_id)
         if not db_product:
@@ -67,7 +59,7 @@ class SQLProductRepository(IProductRepository):
             action="UPDATE",
             description=f"Updated product {db_product.name}",
             previous_state=previous_state,
-            current_state=str(db_product.__dict__)
+            current_state=str(db_product.__dict__),
         )
 
         await self.session.commit()
@@ -89,7 +81,7 @@ class SQLProductRepository(IProductRepository):
             action="DELETE",
             description=f"Deleted product {db_product.name}",
             previous_state=previous_state,
-            current_state=str(db_product.__dict__)
+            current_state=str(db_product.__dict__),
         )
 
         await self.session.commit()

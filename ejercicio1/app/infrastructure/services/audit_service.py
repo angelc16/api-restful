@@ -1,8 +1,11 @@
 from typing import Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.models.audit import AuditLog
+
 from ...domain.interfaces.audit_service import IAuditService
+
 
 class SQLAuditService(IAuditService):
     def __init__(self, session: AsyncSession):

@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, DateTime, Integer, String, Text
 from sqlalchemy.sql import func
 
-from app.infrastructure.database.connection import Base
+from app.domain.models.base import BaseModel
 
-class Audit(Base):
+
+class Audit(BaseModel):
     __tablename__ = "audit_logs"
 
     id = Column(Integer, primary_key=True, index=True)

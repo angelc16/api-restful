@@ -6,11 +6,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.interfaces.audit_service import IAuditService
 from app.domain.interfaces.customer_repository import ICustomerRepository
 from app.domain.interfaces.product_repository import IProductRepository
-# from app.infrastructure.database.connection import get_db
+from app.infrastructure.database.connection import get_db
 from app.infrastructure.repositories.customer_repository import SQLCustomerRepository
 from app.infrastructure.repositories.product_repository import SQLProductRepository
 from app.infrastructure.services.audit_service import SQLAuditService
-from app.infrastructure.database.connection import get_db
+
 
 # Services
 def get_audit_service(
